@@ -8,6 +8,7 @@ using System.DirectoryServices;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -45,10 +46,10 @@ namespace AppBaranov
             textTimeOff.Text = Settings1.Default.textTimeOff;
             this.textTimeOn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTimeOn_KeyPress);
             this.textTimeOff.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTimeOff_KeyPress);
-            panelMain.Visible = false;
+            panelAbout.Visible = false;
             panelSettings.Visible = false;
-            panelAbout.Visible = true;
-            panelMenu.Visible = false;
+            panelMain.Visible = true;
+
         }
         private void textTimeOn_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -143,6 +144,7 @@ namespace AppBaranov
             {
 
                 string addressapp = "https://github.com/civicml/ParentalControl/releases/download/Test/AppBaranov.exe";
+
                 System.Windows.Forms.MessageBox.Show("Доступна новая версия " + latestVersion + " на замену " + currentVersion);
                 DialogResult result = System.Windows.Forms.MessageBox.Show(
                  "Вы уверены, что хотите скачать новую версию?",
@@ -187,17 +189,73 @@ namespace AppBaranov
 
         private void BlockAccount()
         {
+            string timesMo = null;
+            string timesTu = null;
+            string timesWe = null;
+            string timesTh = null;
+            string timesFr = null;
+            string timesSa = null;
+            string timesSu = null;
             //M,T,W,Th,Sa,Su
-            string timesMo = "M," + comboBoxOffMo.Text + "-" + comboBoxOnMo.Text;
-            string timesTu = "T," + comboBoxOffTu.Text + "-" + comboBoxOnTu.Text;
-            string timesWe = "W," + comboBoxOffWe.Text + "-" + comboBoxOnWe.Text;
-            string timesTh = "Th," + comboBoxOffTh.Text + "-" + comboBoxOnTh.Text;
-            string timesFr = "F," + comboBoxOffFr.Text + "-" + comboBoxOnFr.Text;
-            string timesSa = "S," + comboBoxOffSa.Text + "-" + comboBoxOnSa.Text;
-            string timesSu = "Su," + comboBoxOffSu.Text + "-" + comboBoxOnSu.Text;
+            if (string.IsNullOrEmpty(comboBoxOffMo.Text ?? comboBoxOnMo.Text))
+            {
 
-            string times = timesMo + ";" + timesTu + ";" + timesWe + ";" + timesTh
-                + ";" + timesFr + ";" + timesSa + ";" + timesSu;
+            }
+            else
+            {
+                timesMo = "M," + comboBoxOffMo.Text + "-" + comboBoxOnMo.Text + ";";
+            }
+            if (string.IsNullOrEmpty(comboBoxOffTu.Text ?? comboBoxOnTu.Text))
+            {
+
+            }
+            else
+            {
+                timesTu = "T," + comboBoxOffTu.Text + "-" + comboBoxOnTu.Text + ";";
+            }
+            if (string.IsNullOrEmpty(comboBoxOffWe.Text ?? comboBoxOnWe.Text))
+            {
+
+            }
+            else
+            {
+                timesWe = "W," + comboBoxOffWe.Text + "-" + comboBoxOnWe.Text + ";";
+            }
+            if (string.IsNullOrEmpty(comboBoxOffTh.Text ?? comboBoxOnTh.Text))
+            {
+
+            }
+            else
+            {
+                timesTh = "Th," + comboBoxOffTh.Text + "-" + comboBoxOnTh.Text + ";";
+            }
+            if (string.IsNullOrEmpty(comboBoxOffFr.Text ?? comboBoxOnFr.Text))
+            {
+
+            }
+            else
+            {
+                timesFr = "F," + comboBoxOffFr.Text + "-" + comboBoxOnFr.Text + ";";
+            }
+            if (string.IsNullOrEmpty(comboBoxOffSa.Text ?? comboBoxOnSa.Text))
+            {
+
+            }
+            else
+            {
+                timesSa = "S," + comboBoxOffSa.Text + "-" + comboBoxOnSa.Text + ";";
+            }
+            if (string.IsNullOrEmpty(comboBoxOffSu.Text ?? comboBoxOnSu.Text))
+            {
+
+            }
+            else
+            {
+                timesSu = "Su," + comboBoxOffSu.Text + "-" + comboBoxOnSu.Text;
+            }
+
+
+            string times = timesMo + timesTu + timesWe + timesTh + timesFr + timesSa + timesSu;
             ProcessStartInfo psi = new ProcessStartInfo("net", $"user {nameAccount.Text} /times:{times}")
 
             {
@@ -207,8 +265,11 @@ namespace AppBaranov
             };
             Process.Start(psi);
         }
-        /* static void Reestr()
-         {
+
+
+
+        // static void Reestr()
+         /*{
              try
              {
                  // Указываем путь к разделу (без HKCU, так как используем Registry.CurrentUser)
@@ -251,37 +312,38 @@ namespace AppBaranov
 
         private void Settings_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            /*Settings.LinkClicked += (sender, e) =>
+            About.LinkClicked += (sender, e) =>
             {
+                panelSettings.Visible = false;
                 panelMain.Visible = false;
-                panelAbout.Visible = false;
-                panelSettings.Visible = true;
+                panelAbout.Visible = true;
 
-            };*/
+            };
 
 
         }
 
         private void About_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            About.LinkClicked += (sender, e) =>
+            Settings.LinkClicked += (sender, e) =>
             {
+                panelAbout.Visible = false;
+                panelSettings.Visible = true;
                 panelMain.Visible = false;
-                panelSettings.Visible = false;
-                panelAbout.Visible = true;
 
             };
         }
 
         private void OffOnLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            /*Main.LinkClicked += (sender, e) =>
+            Main.LinkClicked += (sender, e) =>
             {
-                panelAbout.Visible = false;
-                panelSettings.Visible = false;
+                System.Windows.Forms.MessageBox.Show("Разрешено оставить пустое значение для недели(день не будет учитываться)");
                 panelMain.Visible = true;
+                panelSettings.Visible = false;
+                panelAbout.Visible = false;
 
-            };*/
+            };
         }
 
 
@@ -324,6 +386,10 @@ namespace AppBaranov
 
         private async void OnButton_Click(object sender, EventArgs e)
         {
+
+           
+
+
             /* // await System.Threading.Tasks.Task.Run(async() =>
               //{
                   while (true)
@@ -419,6 +485,11 @@ namespace AppBaranov
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
             Updater();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
