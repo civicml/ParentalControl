@@ -34,16 +34,12 @@
             Settings = new LinkLabel();
             About = new LinkLabel();
             panelAbout = new Panel();
-            checkBox1 = new CheckBox();
-            OnButton = new Button();
             panelSettings = new Panel();
-            comboBox1 = new ComboBox();
-            newPassAcc = new TextBox();
+            button2 = new Button();
+            PassNewAcc = new TextBox();
             textBox2 = new TextBox();
-            textBox4 = new TextBox();
             textBox3 = new TextBox();
-            textTimeOn = new TextBox();
-            textTimeOff = new TextBox();
+            NameNewAcc = new TextBox();
             panelMain = new Panel();
             comboBoxOnSu = new ComboBox();
             comboBoxOnSa = new ComboBox();
@@ -73,6 +69,7 @@
             textBox6 = new TextBox();
             textBox5 = new TextBox();
             BtnUpdate = new Button();
+            textBox4 = new TextBox();
             panelMenu.SuspendLayout();
             panelAbout.SuspendLayout();
             panelSettings.SuspendLayout();
@@ -115,13 +112,13 @@
             // Settings
             // 
             Settings.AutoSize = true;
-            Settings.LinkColor = Color.Red;
-            Settings.Location = new Point(-1, 177);
+            Settings.LinkColor = Color.Blue;
+            Settings.Location = new Point(3, 32);
             Settings.Name = "Settings";
-            Settings.Size = new Size(199, 15);
+            Settings.Size = new Size(148, 15);
             Settings.TabIndex = 1;
             Settings.TabStop = true;
-            Settings.Text = "Правила выкл учетки( разработка)";
+            Settings.Text = "Создание учетной записи";
             Settings.LinkClicked += About_LinkClicked;
             // 
             // About
@@ -130,118 +127,74 @@
             About.LinkColor = Color.Red;
             About.Location = new Point(0, 196);
             About.Name = "About";
-            About.Size = new Size(150, 15);
+            About.Size = new Size(164, 15);
             About.TabIndex = 0;
             About.TabStop = true;
-            About.Text = "Настройки (В разработке)";
+            About.Text = "О программе( в разработке)";
             About.LinkClicked += Settings_LinkClicked;
             // 
             // panelAbout
             // 
-            panelAbout.Controls.Add(checkBox1);
-            panelAbout.Location = new Point(665, 13);
+            panelAbout.Controls.Add(textBox4);
+            panelAbout.Location = new Point(423, 140);
             panelAbout.Name = "panelAbout";
-            panelAbout.Size = new Size(200, 225);
+            panelAbout.Size = new Size(205, 171);
             panelAbout.TabIndex = 8;
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(52, 82);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(83, 19);
-            checkBox1.TabIndex = 0;
-            checkBox1.Text = "checkBox1";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // OnButton
-            // 
-            OnButton.Location = new Point(83, 37);
-            OnButton.Name = "OnButton";
-            OnButton.Size = new Size(123, 70);
-            OnButton.TabIndex = 0;
-            OnButton.Text = "Применить";
-            OnButton.UseVisualStyleBackColor = true;
-            OnButton.Click += OnButton_Click;
             // 
             // panelSettings
             // 
-            panelSettings.Controls.Add(OnButton);
-            panelSettings.Controls.Add(comboBox1);
-            panelSettings.Controls.Add(newPassAcc);
+            panelSettings.Controls.Add(button2);
+            panelSettings.Controls.Add(PassNewAcc);
             panelSettings.Controls.Add(textBox2);
-            panelSettings.Controls.Add(textBox4);
             panelSettings.Controls.Add(textBox3);
-            panelSettings.Controls.Add(textTimeOn);
-            panelSettings.Controls.Add(textTimeOff);
-            panelSettings.Location = new Point(433, 12);
+            panelSettings.Controls.Add(NameNewAcc);
+            panelSettings.Location = new Point(411, 9);
             panelSettings.Name = "panelSettings";
-            panelSettings.Size = new Size(226, 296);
+            panelSettings.Size = new Size(217, 110);
             panelSettings.TabIndex = 7;
             panelSettings.Visible = false;
             // 
-            // comboBox1
+            // button2
             // 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Выключение", "Гибернация", "Выход из учетной записи" });
-            comboBox1.Location = new Point(85, 3);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(121, 23);
-            comboBox1.TabIndex = 1;
-            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            button2.Location = new Point(3, 58);
+            button2.Name = "button2";
+            button2.Size = new Size(117, 23);
+            button2.TabIndex = 4;
+            button2.Text = "Создать";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
-            // newPassAcc
+            // PassNewAcc
             // 
-            newPassAcc.Location = new Point(4, 232);
-            newPassAcc.Name = "newPassAcc";
-            newPassAcc.Size = new Size(80, 23);
-            newPassAcc.TabIndex = 11;
+            PassNewAcc.Location = new Point(109, 26);
+            PassNewAcc.Name = "PassNewAcc";
+            PassNewAcc.Size = new Size(100, 23);
+            PassNewAcc.TabIndex = 3;
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(3, 203);
+            textBox2.Location = new Point(109, 0);
             textBox2.Name = "textBox2";
             textBox2.ReadOnly = true;
-            textBox2.Size = new Size(81, 23);
-            textBox2.TabIndex = 9;
-            textBox2.Text = "Нов.пароль";
-            // 
-            // textBox4
-            // 
-            textBox4.Location = new Point(125, 203);
-            textBox4.Name = "textBox4";
-            textBox4.ReadOnly = true;
-            textBox4.Size = new Size(81, 23);
-            textBox4.TabIndex = 7;
-            textBox4.Text = "Время вкл";
+            textBox2.Size = new Size(100, 23);
+            textBox2.TabIndex = 2;
+            textBox2.Text = "Пароль";
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(15, 116);
+            textBox3.Location = new Point(3, 3);
             textBox3.Name = "textBox3";
             textBox3.ReadOnly = true;
-            textBox3.Size = new Size(78, 23);
-            textBox3.TabIndex = 6;
-            textBox3.Text = "Время выкл.";
+            textBox3.Size = new Size(100, 23);
+            textBox3.TabIndex = 1;
+            textBox3.Text = "Имя учетки";
             // 
-            // textTimeOn
+            // NameNewAcc
             // 
-            textTimeOn.Location = new Point(113, 254);
-            textTimeOn.MaxLength = 5;
-            textTimeOn.Name = "textTimeOn";
-            textTimeOn.Size = new Size(80, 23);
-            textTimeOn.TabIndex = 5;
-            // 
-            // textTimeOff
-            // 
-            textTimeOff.AccessibleRole = AccessibleRole.None;
-            textTimeOff.Location = new Point(14, 145);
-            textTimeOff.MaxLength = 5;
-            textTimeOff.Name = "textTimeOff";
-            textTimeOff.Size = new Size(79, 23);
-            textTimeOff.TabIndex = 4;
-            textTimeOff.TextChanged += textTimeOff_TextChanged;
+            NameNewAcc.Location = new Point(3, 26);
+            NameNewAcc.Name = "NameNewAcc";
+            NameNewAcc.Size = new Size(100, 23);
+            NameNewAcc.TabIndex = 0;
             // 
             // panelMain
             // 
@@ -558,11 +511,20 @@
             BtnUpdate.UseVisualStyleBackColor = true;
             BtnUpdate.Click += BtnUpdate_Click;
             // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(32, 75);
+            textBox4.Name = "textBox4";
+            textBox4.ReadOnly = true;
+            textBox4.Size = new Size(100, 23);
+            textBox4.TabIndex = 0;
+            textBox4.Text = "Что то на умном";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(902, 326);
+            ClientSize = new Size(645, 326);
             Controls.Add(panelAbout);
             Controls.Add(BtnUpdate);
             Controls.Add(panelMenu);
@@ -594,16 +556,8 @@
         private Button SaveSettings;
         private LinkLabel Main;
         private Panel panelAbout;
-        private Button OnButton;
-        private TextBox textBox4;
-        private TextBox textBox3;
-        private TextBox textTimeOn;
-        private TextBox textTimeOff;
         private TextBox textBox1;
-        private TextBox newPassAcc;
         private TextBox nameAccount;
-        private TextBox textBox2;
-        private ComboBox comboBox1;
         private TextBox textBox7;
         private TextBox textBox6;
         private TextBox textBox5;
@@ -629,6 +583,11 @@
         private ComboBox comboBoxOnTu;
         private ComboBox comboBoxOnMo;
         private Button BtnUpdate;
-        private CheckBox checkBox1;
+        private TextBox NameNewAcc;
+        private TextBox textBox3;
+        private TextBox PassNewAcc;
+        private TextBox textBox2;
+        private Button button2;
+        private TextBox textBox4;
     }
 }

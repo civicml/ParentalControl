@@ -1,4 +1,3 @@
-using AutoUpdaterDotNET;
 using HtmlAgilityPack;
 using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 
@@ -40,92 +40,72 @@ namespace AppBaranov
 
 
             nameAccount.Text = Settings1.Default.nameAccount;
-            comboBox1.Text = Settings1.Default.ComboBoxSet;
+           /* comboBox1.Text = Settings1.Default.ComboBoxSet;
             newPassAcc.Text = Settings1.Default.newPassAcc;
             textTimeOn.Text = Settings1.Default.textTimeOn;
             textTimeOff.Text = Settings1.Default.textTimeOff;
             this.textTimeOn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTimeOn_KeyPress);
-            this.textTimeOff.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTimeOff_KeyPress);
+            this.textTimeOff.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textTimeOff_KeyPress);*/
             panelAbout.Visible = false;
             panelSettings.Visible = false;
             panelMain.Visible = true;
 
         }
-        private void textTimeOn_KeyPress(object sender, KeyPressEventArgs e)
+ 
+        private void CreateUsers()
         {
-            // Разрешаем: цифры (char.IsDigit),
-            // двоеточие (e.KeyChar == ':'),
-            // и управляющие клавиши (Backspace, Delete, стрелки) (char.IsControl)
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != ':' && !char.IsControl(e.KeyChar))
+            string userName = NameNewAcc.Text;
+            string password = PassNewAcc.Text;
+            string groupName = "Администраторы"; // Например: "Guests" или "Administrators"
+
+            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
             {
-                e.Handled = true; // Запрещаем ввод символа
+                System.Windows.Forms.MessageBox.Show("Пожалуйста, заполните все поля.");
+                return;
+            }
+
+            
+            try
+            {
+                // Подключение к локальной машине
+                using (DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                {
+                    // 1. Создание пользователя
+                    using (DirectoryEntry newUser = localMachine.Children.Add(userName, "user"))
+                    {
+                        // Установка пароля и описания
+                        newUser.Invoke("SetPassword", password);
+                        newUser.Invoke("Put", new object[] { "Description", "Пользователь создан из C# WinForms" });
+                        newUser.CommitChanges(); // Сохранение в системе
+                    }
+
+                    // 2. Поиск группы и добавление пользователя
+                    using (DirectoryEntry groupEntry = localMachine.Children.Find(groupName, "group"))
+                    {
+                        // Формируем путь к пользователю (путь ADsPath)
+                        string userPath = $"WinNT://{Environment.MachineName}/{userName},user";
+
+                        // Добавление участника в группу
+                        groupEntry.Invoke("Add", new object[] { userPath });
+                        groupEntry.CommitChanges();
+                    }
+                }
+
+                System.Windows.Forms.MessageBox.Show("Пользователь успешно создан и добавлен в группу!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void textTimeOff_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // Разрешаем: цифры (char.IsDigit),
-            // двоеточие (e.KeyChar == ':'),
-            // и управляющие клавиши (Backspace, Delete, стрелки) (char.IsControl)
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != ':' && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true; // Запрещаем ввод символа
-            }
-        }
+    
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void ChangePass()
-        {
-
-
-            DirectoryEntry user = new DirectoryEntry("WinNT://./" + nameAccount.Text + ",user");
-            // Вызываем метод SetPassword
-            user.Invoke("SetPassword", new object[] { newPassAcc.Text });
-            user.CommitChanges();
-
-
-        }
-
-        private void TaskOnCreate()
-        {
-            string textTimeOnString = textTimeOn.Text;
-            string format = "HH:mm";
-            DateTime textTimeOnParse = DateTime.ParseExact(textTimeOnString, format, System.Globalization.CultureInfo.InvariantCulture);
-            // 1. Подключение к планировщику задач
-            using (TaskService ts = new TaskService())
-            {
-                // 2. Создание новой задачи
-                TaskDefinition td = ts.NewTask();
-                td.RegistrationInfo.Description = "Включение пк в определенное время";
-
-                // 3. Установка времени (например, берется из textTimeOn)
-                DailyTrigger dt = new DailyTrigger { StartBoundary = textTimeOnParse };
-                td.Triggers.Add(dt);
-
-                // 4. Действие: запуск программы (можно создать пустой .bat файл, если цель - только пробуждение)
-                td.Actions.Add(new ExecAction("cmd.exe", "/c echo wake", null));
-
-                // 5. ВАЖНО: Разрешить пробуждение компьютера
-                td.Settings.WakeToRun = true;
-                td.Settings.DisallowStartIfOnBatteries = false;
-                td.Settings.StopIfGoingOnBatteries = false;
-
-                // 6. Регистрация задачи
-                ts.RootFolder.RegisterTaskDefinition("WakeUpTask", td);
-            }
-        }
-
-        private void TaskOnDelete()
-        {
-            using (TaskService ts = new TaskService())
-            {
-                // Удаление задачи по имени из корневой папки
-                ts.RootFolder.DeleteTask("WakeUpTask", false);
-            }
-        }
 
         private void Updater()
         {
@@ -267,40 +247,10 @@ namespace AppBaranov
         }
 
 
-
-        // static void Reestr()
-         /*{
-             try
-             {
-                 // Указываем путь к разделу (без HKCU, так как используем Registry.CurrentUser)
-                 string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Policies\System";
-
-                 // Создаем или открываем раздел для записи
-                 using (RegistryKey key = Registry.CurrentUser.CreateSubKey(keyPath))
-                 {
-                     if (key != null)
-                     {
-                         // Устанавливаем значение LogonHoursAction (1 = Lock)
-                         // RegistryValueKind.DWord соответствует ключу /t REG_DWORD
-                         key.SetValue("LogonHoursAction", 1, RegistryValueKind.DWord);
-
-                         Console.WriteLine("Параметр успешно добавлен в реестр.");
-                     }
-                 }
-             }
-             catch (Exception ex)
-             {
-                 Console.WriteLine($"Ошибка при записи в реестр: {ex.Message}");
-             }
-         }*/
-
-
         private void button1_Click(object sender, EventArgs e)
         {
 
             DefaultSettingNetUsersTime();
-
-
 
         }
 
@@ -312,38 +262,27 @@ namespace AppBaranov
 
         private void Settings_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            About.LinkClicked += (sender, e) =>
-            {
-                panelSettings.Visible = false;
-                panelMain.Visible = false;
-                panelAbout.Visible = true;
-
-            };
-
-
+            panelSettings.Visible = false;
+            panelMain.Visible = false;
+            panelAbout.Visible = true;
+           
+           
         }
 
         private void About_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Settings.LinkClicked += (sender, e) =>
-            {
-                panelAbout.Visible = false;
-                panelSettings.Visible = true;
-                panelMain.Visible = false;
-
-            };
+            panelAbout.Visible = false;
+            panelSettings.Visible = true;
+            panelMain.Visible = false;
+           
         }
 
         private void OffOnLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Main.LinkClicked += (sender, e) =>
-            {
-                System.Windows.Forms.MessageBox.Show("Разрешено оставить пустое значение для недели(день не будет учитываться)");
-                panelMain.Visible = true;
-                panelSettings.Visible = false;
-                panelAbout.Visible = false;
-
-            };
+            panelMain.Visible = true;
+            panelSettings.Visible = false;
+            panelAbout.Visible = false;
+           
         }
 
 
@@ -370,11 +309,11 @@ namespace AppBaranov
 
 
 
-            Settings1.Default.textTimeOn = textTimeOn.Text;
+            /*Settings1.Default.textTimeOn = textTimeOn.Text;
             Settings1.Default.textTimeOff = textTimeOff.Text;
             Settings1.Default.nameAccount = nameAccount.Text;
             Settings1.Default.newPassAcc = newPassAcc.Text;
-            Settings1.Default.ComboBoxSet = comboBox1.Text;
+            Settings1.Default.ComboBoxSet = comboBox1.Text;*/
             Settings1.Default.Save();
             System.Windows.Forms.MessageBox.Show("Настройки сохранены и применены к учетной записи " + nameAccount.Text);
             // Reestr();
@@ -387,7 +326,7 @@ namespace AppBaranov
         private async void OnButton_Click(object sender, EventArgs e)
         {
 
-           
+
 
 
             /* // await System.Threading.Tasks.Task.Run(async() =>
@@ -490,6 +429,11 @@ namespace AppBaranov
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CreateUsers();
         }
     }
 }
