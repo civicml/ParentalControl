@@ -1,16 +1,7 @@
-using HtmlAgilityPack;
-using Microsoft.Win32;
-using Microsoft.Win32.TaskScheduler;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.DirectoryServices;
 using System.Net;
 using System.Reflection;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Windows;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 
@@ -49,6 +40,8 @@ namespace AppBaranov
             panelAbout.Visible = false;
             panelSettings.Visible = false;
             panelMain.Visible = true;
+
+            Updater();
 
         }
  
@@ -118,7 +111,7 @@ namespace AppBaranov
 
             if (latestVersion.Equals(currentVersion))
             {
-                System.Windows.Forms.MessageBox.Show("Ваша версия последняя, а именно " + currentVersion);
+                
             }
             else
             {
@@ -127,7 +120,7 @@ namespace AppBaranov
 
                 System.Windows.Forms.MessageBox.Show("Доступна новая версия " + latestVersion + " на замену " + currentVersion);
                 DialogResult result = System.Windows.Forms.MessageBox.Show(
-                 "Вы уверены, что хотите скачать новую версию?",
+                 "Хотите ли Вы скачать новую версию?",
                     "Подтверждение действия",
                     MessageBoxButtons.YesNo,
                      MessageBoxIcon.Question);
@@ -326,9 +319,6 @@ namespace AppBaranov
         private async void OnButton_Click(object sender, EventArgs e)
         {
 
-
-
-
             /* // await System.Threading.Tasks.Task.Run(async() =>
               //{
                   while (true)
@@ -421,10 +411,7 @@ namespace AppBaranov
 
         }
 
-        private void BtnUpdate_Click(object sender, EventArgs e)
-        {
-            Updater();
-        }
+       
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -34,6 +34,7 @@
             Settings = new LinkLabel();
             About = new LinkLabel();
             panelAbout = new Panel();
+            textBox4 = new TextBox();
             panelSettings = new Panel();
             button2 = new Button();
             PassNewAcc = new TextBox();
@@ -68,8 +69,6 @@
             textBox7 = new TextBox();
             textBox6 = new TextBox();
             textBox5 = new TextBox();
-            BtnUpdate = new Button();
-            textBox4 = new TextBox();
             panelMenu.SuspendLayout();
             panelAbout.SuspendLayout();
             panelSettings.SuspendLayout();
@@ -78,11 +77,11 @@
             // 
             // button1
             // 
-            button1.Location = new Point(7, 285);
+            button1.Location = new Point(5, 305);
             button1.Name = "button1";
-            button1.Size = new Size(75, 23);
+            button1.Size = new Size(183, 23);
             button1.TabIndex = 0;
-            button1.Text = "Default";
+            button1.Text = "Сбросить правила";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -93,7 +92,7 @@
             panelMenu.Controls.Add(About);
             panelMenu.Location = new Point(7, 9);
             panelMenu.Name = "panelMenu";
-            panelMenu.Size = new Size(198, 224);
+            panelMenu.Size = new Size(198, 328);
             panelMenu.TabIndex = 6;
             panelMenu.Paint += panelMenu_Paint;
             // 
@@ -125,7 +124,7 @@
             // 
             About.AutoSize = true;
             About.LinkColor = Color.Red;
-            About.Location = new Point(0, 196);
+            About.Location = new Point(0, 305);
             About.Name = "About";
             About.Size = new Size(164, 15);
             About.TabIndex = 0;
@@ -140,6 +139,15 @@
             panelAbout.Name = "panelAbout";
             panelAbout.Size = new Size(205, 171);
             panelAbout.TabIndex = 8;
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(32, 75);
+            textBox4.Name = "textBox4";
+            textBox4.ReadOnly = true;
+            textBox4.Size = new Size(100, 23);
+            textBox4.TabIndex = 0;
+            textBox4.Text = "Что то на умном";
             // 
             // panelSettings
             // 
@@ -203,6 +211,7 @@
             panelMain.Controls.Add(nameAccount);
             panelMain.Controls.Add(comboBoxOnFr);
             panelMain.Controls.Add(comboBoxOnTh);
+            panelMain.Controls.Add(button1);
             panelMain.Controls.Add(textBox1);
             panelMain.Controls.Add(comboBoxOnWe);
             panelMain.Controls.Add(comboBoxOnTu);
@@ -227,7 +236,7 @@
             panelMain.Controls.Add(textBox5);
             panelMain.Location = new Point(211, 9);
             panelMain.Name = "panelMain";
-            panelMain.Size = new Size(194, 302);
+            panelMain.Size = new Size(194, 329);
             panelMain.TabIndex = 3;
             panelMain.Visible = false;
             // 
@@ -501,36 +510,15 @@
             textBox5.TabIndex = 0;
             textBox5.Text = "День";
             // 
-            // BtnUpdate
-            // 
-            BtnUpdate.Location = new Point(88, 285);
-            BtnUpdate.Name = "BtnUpdate";
-            BtnUpdate.Size = new Size(94, 23);
-            BtnUpdate.TabIndex = 8;
-            BtnUpdate.Text = "Обновление";
-            BtnUpdate.UseVisualStyleBackColor = true;
-            BtnUpdate.Click += BtnUpdate_Click;
-            // 
-            // textBox4
-            // 
-            textBox4.Location = new Point(32, 75);
-            textBox4.Name = "textBox4";
-            textBox4.ReadOnly = true;
-            textBox4.Size = new Size(100, 23);
-            textBox4.TabIndex = 0;
-            textBox4.Text = "Что то на умном";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(645, 326);
+            ClientSize = new Size(645, 339);
             Controls.Add(panelAbout);
-            Controls.Add(BtnUpdate);
             Controls.Add(panelMenu);
             Controls.Add(panelMain);
             Controls.Add(panelSettings);
-            Controls.Add(button1);
             Name = "Form1";
             Text = "Control";
             Load += Form1_Load;
@@ -582,7 +570,6 @@
         private ComboBox comboBoxOnWe;
         private ComboBox comboBoxOnTu;
         private ComboBox comboBoxOnMo;
-        private Button BtnUpdate;
         private TextBox NameNewAcc;
         private TextBox textBox3;
         private TextBox PassNewAcc;
